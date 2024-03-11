@@ -7,8 +7,8 @@ public class outtake extends Command{
 
     IntakeSubsystem subsystem;
     double speed;
-    outtake(IntakeSubsystem subsystem, double speed){
-this.speed = speed;
+    public outtake(IntakeSubsystem subsystem){
+
 this.subsystem = subsystem;
 addRequirements(subsystem);
     }
@@ -31,6 +31,6 @@ addRequirements(subsystem);
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }
