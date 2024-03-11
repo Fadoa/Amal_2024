@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class intake extends Command{
@@ -25,19 +24,16 @@ addRequirements(Intake);
         Intake.intake(0.75);
     }
 
-    @Override
-    public SequentialCommandGroup andThen(Command... next) {
-        Intake.intake(0);
-        return super.andThen(next);
-    }
+    
     @Override
     public void end(boolean interrupted) {
-        Intake.intake(0);
+
         System.out.println("intake bitti"); 
     }
 
     @Override
     public boolean isFinished() {
+        Intake.intake(0);
         return true;
     }
 }
