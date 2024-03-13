@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -28,8 +29,17 @@ public class ArmSubsystem extends SubsystemBase {
         ArmMotor1.set(VictorSPXControlMode.PercentOutput, power);
         ArmMotor2.set(VictorSPXControlMode.PercentOutput, power);
     }
-    public void Climb(){
-        ClimberMotor1.set(0.5);
-        ClimberMotor2.set(0.5);
+    public void Climbfunct(double power){
+        ClimberMotor1.set(power);
+        ClimberMotor2.set(power);
     } 
+    public Command arm(double power){
+
+return this.runOnce(() -> move_arm(power));        
+    }
+    
+    public Command climber(double power){
+
+        return this.runOnce(() -> Climbfunct(power));
+    }
 }

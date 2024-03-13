@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.intake;
-import frc.robot.commands.outtake;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -35,9 +33,8 @@ public class RobotContainer
 
   private final IntakeSubsystem Intake = new IntakeSubsystem(15, 14, 13);
 
-  private final intake a = new intake(Intake);
+  private final ArmSubsystem Arm = new ArmSubsystem(9, 10, 11, 12);
   
-  private final outtake b = new outtake(Intake);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -46,9 +43,7 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
-
- 
-
+    
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
     // controls are front-left positive
@@ -82,9 +77,17 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    driverXbox.a().whileTrue(a);
-    driverXbox.b().whileTrue(b);
-
+    driverXbox.a().whileTrue(Intake.intake(0.4));
+    driverXbox.b().whileTrue(Intake.intake(-0.4)); 
+    driverXbox.y().whileTrue(Intake.shoot(0.5));
+    
+    driverXbox.povUp().whileTrue(Arm.climber(0.3));
+    driverXbox.povDown().whileTrue(Arm.climber(-0.3));
+    driverXbox.povLeft().whileTrue(drivebase.aimToTarget());
+    driverXbox.povRight().whileTrue(getAutonomousCommand());
+     
+    driverXbox.leftTrigger().whileTrue(Arm.arm(driverXbox.getLeftTriggerAxis()));
+    driverXbox.rightTrigger().whileTrue(Arm.arm(-driverXbox.getRightTriggerAxis()));
   }
 
   /**
@@ -105,6 +108,6 @@ public class RobotContainer
 
   public void setMotorBrake(boolean brake)
   {
-    drivebase.setMotorBrake(true);
+    drivebase.setMotorBrake(false);
   }
 }

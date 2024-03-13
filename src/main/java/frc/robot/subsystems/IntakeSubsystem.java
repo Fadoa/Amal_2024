@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -17,17 +18,19 @@ public class IntakeSubsystem extends SubsystemBase {
         ShooterMotor_2 = new CANSparkMax(13, MotorType.kBrushless);
     }
 
-    public void intake(double power){
-        IntakeMotor.set(power);
+    public Command intake(double power){
+        
+        return this.runOnce(() -> IntakeMotor.set(power));
     }
 
-    public void shoot(double power){
-        ShooterMotor_1.set(power);
+    public Command shoot(double power){
+        
+        return this.runOnce(() -> shootfunct(power));
+    }
 
+    public void shootfunct(double power){
+        ShooterMotor_1.set(power);;
         ShooterMotor_2.set(-power);
     }
 
-    public void output(double power){
-        IntakeMotor.set(-power);
-    }
 }

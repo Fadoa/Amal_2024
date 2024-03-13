@@ -38,16 +38,9 @@ public class mastahpiece {
     return alpha;
 
     }
-    public static double AngleToMotor(double angle, double pos){
-        double error = 0 + angle;
-    
-        double outputSpeed = error * 0.2;
-        
-        if(angle >= 89){
-            outputSpeed = 85 * 0.2 - pos;
-            
-        }
-        return outputSpeed - pos;
+    public static double AngleToMotor(double angle){
+
+        return 0.0;
 
     }
 
