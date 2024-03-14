@@ -8,9 +8,14 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Intake;
+import frc.robot.commands.dpad;
+import frc.robot.commands.expel;
+import frc.robot.commands.outtake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -29,12 +34,21 @@ public class RobotContainer
                                                                          "swerve"));
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController driverXbox = new CommandXboxController(0);
+  final CommandPS4Controller driverXbox = new CommandPS4Controller(0);
 
   private final IntakeSubsystem Intake = new IntakeSubsystem(15, 14, 13);
 
   private final ArmSubsystem Arm = new ArmSubsystem(9, 10, 11, 12);
   
+  private final Intake intakecom= new Intake(Intake); 
+  
+  private final outtake outtake = new outtake(Intake);
+
+  private final dpad dpadComUp = new dpad(Arm, 0.520);
+
+  private final dpad dpadComdown = new dpad(Arm, -0.5);
+
+  private final expel expeliat = new expel(Intake);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -53,8 +67,8 @@ public class RobotContainer
     //TODO stop when the left joystick button is pressed.
     //TODO dpad tuşlarına basıldığında x derece hareket edecek.
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> -MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.7),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.7),
         () -> driverXbox.getRightX() * 0.9);
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
@@ -75,19 +89,15 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    driverXbox.a().whileTrue(Intake.intake(0.4));
-    driverXbox.b().whileTrue(Intake.intake(-0.4)); 
-    driverXbox.y().whileTrue(Intake.shoot(0.5));
+    driverXbox.cross().whileTrue(intakecom);
     
-    driverXbox.povUp().whileTrue(Arm.climber(0.3));
-    driverXbox.povDown().whileTrue(Arm.climber(-0.3));
-    driverXbox.povLeft().whileTrue(drivebase.aimToTarget());
-    driverXbox.povRight().whileTrue(getAutonomousCommand());
-     
-    driverXbox.leftTrigger().whileTrue(Arm.arm(driverXbox.getLeftTriggerAxis()));
-    driverXbox.rightTrigger().whileTrue(Arm.arm(-driverXbox.getRightTriggerAxis()));
+    driverXbox.square().whileTrue(outtake); 
+    
+    driverXbox.circle().whileTrue(expeliat);
+    
+    driverXbox.povDown().whileTrue(dpadComdown);
+    
+    driverXbox.povUp().whileTrue(dpadComUp);
   }
 
   /**

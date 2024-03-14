@@ -21,16 +21,17 @@ addRequirements(subsystem);
     @Override
     public void execute() 
     {
-        subsystem.intake(-0.75);
+        subsystem.intake(-0.6);
     }
 
     @Override
     public void end(boolean interrupted) {
         System.out.println("intake bitti"); 
+        subsystem.intake(0);
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 }

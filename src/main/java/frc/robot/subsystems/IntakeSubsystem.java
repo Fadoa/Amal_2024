@@ -18,19 +18,17 @@ public class IntakeSubsystem extends SubsystemBase {
         ShooterMotor_2 = new CANSparkMax(13, MotorType.kBrushless);
     }
 
-    public Command intake(double power){
-        
-        return this.runOnce(() -> IntakeMotor.set(power));
+    public void intake(double power){
+
+        IntakeMotor.set(power);
     }
 
-    public Command shoot(double power){
-        
-        return this.runOnce(() -> shootfunct(power));
-    }
-
-    public void shootfunct(double power){
+    public void shoot(double power){
+    
         ShooterMotor_1.set(power);;
-        ShooterMotor_2.set(-power);
+        ShooterMotor_2.set(-power);    
+        
     }
+
 
 }

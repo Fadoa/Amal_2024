@@ -33,13 +33,7 @@ public class ArmSubsystem extends SubsystemBase {
         ClimberMotor1.set(power);
         ClimberMotor2.set(power);
     } 
-    public Command arm(double power){
 
-return this.runOnce(() -> move_arm(power));        
-    }
     
-    public Command climber(double power){
 
-        return this.runOnce(() -> Climbfunct(power));
-    }
 }

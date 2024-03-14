@@ -1,13 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class stopIntake extends Command {
-    private IntakeSubsystem subsystem;
+public class climberCom extends Command {
+    private ArmSubsystem subsystem;
+    private double power;
 
-    public stopIntake(IntakeSubsystem subsystem){
+    public climberCom(ArmSubsystem subsystem, double power){
     this.subsystem = subsystem;
+    this.power = power;
     addRequirements(subsystem);
         }
         @Override
@@ -19,16 +22,17 @@ public class stopIntake extends Command {
         @Override
         public void execute() 
         {
-            subsystem.intake(0);
+            subsystem.Climbfunct(power);
         }
     
         @Override
         public void end(boolean interrupted) {
+            subsystem.Climbfunct(0);
             System.out.println("intake bitti"); 
         }
     
         @Override
         public boolean isFinished() {
-            return true;
+            return false;
         }
 }

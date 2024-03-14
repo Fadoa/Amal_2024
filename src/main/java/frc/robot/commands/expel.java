@@ -29,13 +29,14 @@ public class expel extends Command {
   @Override
   public void execute() {
     SmartDashboard.putNumber("expel power", 0.2);
-    subsystem.shoot(0.2);
+    subsystem.shoot(0.5);
     // TODO buradaki katsayı yzaklıkla birlikte değişen uzaklığın karesiyle hesaplanacak ,
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.shoot(0);
 System.out.println("expel bitti!!!!");    
   }
 
