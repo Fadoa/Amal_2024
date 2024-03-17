@@ -30,7 +30,7 @@ public class special extends Command {
   public void execute() {
     
     subsystem.shoot(0.6);
-    subsystem.intake(0.5);
+    subsystem.intake(-0.5);
     // TODO buradaki katsayı yzaklıkla birlikte değişen uzaklığın karesiyle hesaplanacak ,
   }
 

@@ -53,7 +53,6 @@ public class RobotContainer
   private final dpad dpadComdown = new dpad(Arm, -0.45
   );
 
-  private final special special = new special(Intake);
   private final climberCom climberComUp = new climberCom(Arm, -0.5);
   
   
@@ -103,13 +102,11 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    driverXbox.cross().toggleOnTrue(intakecom);
+    driverXbox.cross().whileTrue(intakecom);
     
     driverXbox.square().whileTrue(outtake); 
     
-    driverXbox.circle().toggleOnTrue(expeliat);
-
-    driverXbox.triangle().whileTrue(special) ;
+    driverXbox.circle().whileTrue(expeliat);
 
     driverXbox.povDown().whileTrue(dpadComdown);
     

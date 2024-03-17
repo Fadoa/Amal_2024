@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public final class Main {
   private Main() {}
-//TODO dereceoffsetini bul
   /**
    * Main initialization function. Do not perform any initialization here.
    *
