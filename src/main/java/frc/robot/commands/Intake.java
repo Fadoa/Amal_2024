@@ -19,7 +19,7 @@ public class Intake extends Command {
         @Override
         public void execute() 
         {
-            subsystem.intake(0.6);
+            subsystem.intake(-0.75);
         }
     
         @Override

@@ -21,7 +21,7 @@ addRequirements(subsystem);
     @Override
     public void execute() 
     {
-        subsystem.intake(-0.6);
+        subsystem.intake(0.6);
     }
 
     @Override

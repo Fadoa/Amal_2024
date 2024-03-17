@@ -29,7 +29,7 @@ public class expel extends Command {
   @Override
   public void execute() {
     SmartDashboard.putNumber("expel power", 0.2);
-    subsystem.shoot(0.5);
+    subsystem.shoot(0.6);
     // TODO buradaki katsayı yzaklıkla birlikte değişen uzaklığın karesiyle hesaplanacak ,
   }
 

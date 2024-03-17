@@ -1,49 +1,44 @@
 package frc.robot.commands;
 
+
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
 
-public class dpad extends Command{
+public class special extends Command {
+  private final IntakeSubsystem subsystem;
 
-
-  private final ArmSubsystem subsystem;
-
-  private final double speed;
-
-  private  double cry = 0;
-
-    public dpad(ArmSubsystem subsystem, double speed) {
-    this.speed = speed;
+  /**
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
+   */
+  public special(IntakeSubsystem subsystem) {
     this.subsystem = subsystem;
-      addRequirements(subsystem);
+    
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-System.out.println("dpad çalıştı!");
+    System.out.println("expel başladi!!!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-double error = speed - cry;
-
-SmartDashboard.putNumber("Arm speed", error);
-subsystem.move_arm(error);
-cry =+ 0.05;
-if(cry == 0){
-  cry = 0.05;}
-
-
-      
-    }
+    
+    subsystem.shoot(0.6);
+    subsystem.intake(0.5);
+    // TODO buradaki katsayı yzaklıkla birlikte değişen uzaklığın karesiyle hesaplanacak ,
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.move_arm(0);
+    subsystem.shoot(0);
+System.out.println("expel bitti!!!!");    
   }
 
   // Returns true when the command should end.
@@ -51,5 +46,4 @@ if(cry == 0){
   public boolean isFinished() {
     return false;
   }
-
 }
