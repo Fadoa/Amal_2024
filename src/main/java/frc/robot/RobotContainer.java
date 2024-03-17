@@ -108,14 +108,14 @@ public class RobotContainer
     
     driverXbox.square().whileTrue(outtake); 
     
-    driverXbox.circle().whileTrue(expeliat);
+    driverXbox.circle().toggleOnTrue(expeliat);
 
     driverXbox.povDown().whileTrue(dpadComdown);
     
     driverXbox.povUp().whileTrue(dpadComUp);
 
-    driverXbox.L1().whileTrue(climberComDown);
-    driverXbox.R1().whileTrue(climberComUp);
+    driverXbox.povLeft().whileTrue(climberComDown);
+    driverXbox.povRight().whileTrue(climberComUp);
   }
 
   /**

@@ -32,7 +32,6 @@ public class expel extends Command {
   public void execute() {
     SmartDashboard.putNumber("expel power", 0.2);
     shooterSubsystem.shoot(0.6);
-    subsystem.intake(-0.5);
     
   }
 
