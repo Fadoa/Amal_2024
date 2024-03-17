@@ -20,9 +20,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         ArmMotor2 = new VictorSPX(12);
 
-        ClimberMotor1 = new CANSparkMax(9, MotorType.kBrushed);
+        ClimberMotor1 = new CANSparkMax(ArmMotor1ID, MotorType.kBrushed);
 
-        ClimberMotor2 = new CANSparkMax(10, MotorType.kBrushed);
+        ClimberMotor2 = new CANSparkMax(ArmMotor2ID, MotorType.kBrushed);
     }
     
     public void move_arm(double power){

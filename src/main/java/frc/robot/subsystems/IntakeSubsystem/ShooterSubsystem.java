@@ -12,7 +12,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(){
     ShooterMotor1 = new CANSparkMax(14, MotorType.kBrushless);
-    ShooterMotor2 = new CANSparkMax(15, MotorType.kBrushless);
+    ShooterMotor2 = new CANSparkMax(13, MotorType.kBrushless);
     }
 
     public void shoot(double power){
