@@ -1,22 +1,24 @@
 package frc.robot.commands;
 
 
-import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
 
 public class expel extends Command {
   private final IntakeSubsystem subsystem;
+  private final ShooterSubsystem shooterSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public expel(IntakeSubsystem subsystem) {
+  public expel(IntakeSubsystem subsystem, ShooterSubsystem shooterSubsystem) {
     this.subsystem = subsystem;
-    
-    addRequirements(subsystem);
+    this.shooterSubsystem = shooterSubsystem;
+    addRequirements(subsystem,shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +31,7 @@ public class expel extends Command {
   @Override
   public void execute() {
     SmartDashboard.putNumber("expel power", 0.2);
-    subsystem.shoot(0.6);
+    shooterSubsystem.shoot(0.6);
     subsystem.intake(-0.5);
     
   }
@@ -37,7 +39,7 @@ public class expel extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.shoot(0);
+    shooterSubsystem.shoot(0);
 System.out.println("expel bitti!!!!");    
   }
 

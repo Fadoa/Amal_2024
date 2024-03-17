@@ -19,9 +19,9 @@ import frc.robot.commands.climberCom;
 import frc.robot.commands.dpad;
 import frc.robot.commands.expel;
 import frc.robot.commands.outtake;
-import frc.robot.commands.special;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -40,7 +40,9 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandPS4Controller driverXbox = new CommandPS4Controller(0);
 
-  private final IntakeSubsystem Intake = new IntakeSubsystem();
+  private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake = new IntakeSubsystem();
+  
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   private final ArmSubsystem Arm = new ArmSubsystem(9, 10, 11, 12);
   
@@ -58,7 +60,7 @@ public class RobotContainer
   
   private final climberCom climberComDown = new climberCom(Arm, 0.5);
 
-  private final expel expeliat = new expel(Intake);
+  private final expel expeliat = new expel(Intake,shooter);
 
   private final SequentialCommandGroup test = new SequentialCommandGroup();
 
