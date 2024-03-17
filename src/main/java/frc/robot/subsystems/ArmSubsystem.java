@@ -16,13 +16,13 @@ public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax ClimberMotor2;
     
     public ArmSubsystem(int ArmMotor1ID, int ArmMotor2ID,double ClimberID1,double ClimberID2){
-        ArmMotor1 = new VictorSPX(ArmMotor1ID);
+        ArmMotor1 = new VictorSPX(11);
 
-        ArmMotor2 = new VictorSPX(ArmMotor2ID);
+        ArmMotor2 = new VictorSPX(12);
 
-        ClimberMotor1 = new CANSparkMax(11, MotorType.kBrushed);
+        ClimberMotor1 = new CANSparkMax(9, MotorType.kBrushed);
 
-        ClimberMotor2 = new CANSparkMax(12, MotorType.kBrushed);
+        ClimberMotor2 = new CANSparkMax(10, MotorType.kBrushed);
     }
     
     public void move_arm(double power){
