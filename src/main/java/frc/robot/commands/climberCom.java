@@ -15,7 +15,7 @@ public class climberCom extends Command {
         @Override
         public void initialize() 
         {
-            System.out.println("intake basladi");
+            System.out.println("iclimasladi");
         }
     
         @Override
