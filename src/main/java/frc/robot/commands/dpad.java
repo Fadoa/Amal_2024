@@ -9,13 +9,16 @@ public class dpad extends Command{
 
   private final ArmSubsystem subsystem;
 
-  private final double speed;
+  private final double speed1;
+
+  private final double speed2;
 
   private  double cry = 0;
 
-    public dpad(ArmSubsystem subsystem, double speed) {
-    this.speed = speed;
+    public dpad(ArmSubsystem subsystem, double speed1, double speed2) {
+    this.speed1 = speed1;
     this.subsystem = subsystem;
+    this.speed2 = speed2;
       addRequirements(subsystem);
   }
 
@@ -28,22 +31,13 @@ System.out.println("dpad çalıştı!");
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-double error = speed - cry;
 
-SmartDashboard.putNumber("Arm speed", error);
-subsystem.move_arm(error);
-cry =+ 0.05;
-if(cry == 0){
-  cry = 0.05;}
-
-
-      
-    }
+subsystem.move_arm(speed1,speed2);}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.move_arm(0);
+    subsystem.move_arm(0,0);
   }
 
   // Returns true when the command should end.

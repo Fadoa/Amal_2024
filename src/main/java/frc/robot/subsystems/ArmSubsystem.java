@@ -16,18 +16,18 @@ public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax ClimberMotor2;
     
     public ArmSubsystem(int ArmMotor1ID, int ArmMotor2ID,double ClimberID1,double ClimberID2){
-        ArmMotor1 = new VictorSPX(11);
+        ArmMotor1 = new VictorSPX(9);
 
-        ArmMotor2 = new VictorSPX(12);
+        ArmMotor2 = new VictorSPX(10);
 
-        ClimberMotor1 = new CANSparkMax(ArmMotor1ID, MotorType.kBrushed);
+        ClimberMotor1 = new CANSparkMax(11, MotorType.kBrushed);
 
-        ClimberMotor2 = new CANSparkMax(ArmMotor2ID, MotorType.kBrushed);
+        ClimberMotor2 = new CANSparkMax(12, MotorType.kBrushed);
     }
     
-    public void move_arm(double power){
-        ArmMotor1.set(VictorSPXControlMode.PercentOutput, power);
-        ArmMotor2.set(VictorSPXControlMode.PercentOutput, power);
+    public void move_arm(double power1,double power2){
+        ArmMotor1.set(VictorSPXControlMode.PercentOutput, power1);
+        ArmMotor2.set(VictorSPXControlMode.PercentOutput, power2);
     }
     public void Climbfunct(double power){
         ClimberMotor1.set(power);

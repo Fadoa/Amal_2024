@@ -7,7 +7,6 @@ import frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
 
 public class expel extends Command {
-  private final IntakeSubsystem subsystem;
   private final ShooterSubsystem shooterSubsystem;
 
   /**
@@ -15,10 +14,10 @@ public class expel extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public expel(IntakeSubsystem subsystem, ShooterSubsystem shooterSubsystem) {
-    this.subsystem = subsystem;
+  public expel(ShooterSubsystem shooterSubsystem) {
+    
     this.shooterSubsystem = shooterSubsystem;
-    addRequirements(subsystem,shooterSubsystem);
+    addRequirements(shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,8 +29,8 @@ public class expel extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("expel power", 0.2);
-    shooterSubsystem.shoot(0.6);
+    SmartDashboard.putNumber("expel power", 0.5);
+    shooterSubsystem.shoot(0.5);
     
   }
 

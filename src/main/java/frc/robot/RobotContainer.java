@@ -50,17 +50,16 @@ public class RobotContainer
   
   private final outtake outtake = new outtake(Intake);
 
-  private final dpad dpadComUp = new dpad(Arm, 0.65);
+  private final dpad dpadComUp = new dpad(Arm, 0.95,1);
 
-  private final dpad dpadComdown = new dpad(Arm, -0.45
-  );
+  private final dpad dpadComdown = new dpad(Arm, -0.64875,-0.75);
 
   private final climberCom climberComUp = new climberCom(Arm, -0.5);
   
   
   private final climberCom climberComDown = new climberCom(Arm, 0.5);
 
-  private final expel expeliat = new expel(Intake,shooter);
+  private final expel expeliat = new expel(shooter);
 
   private final SequentialCommandGroup test = new SequentialCommandGroup();
 
@@ -82,8 +81,8 @@ public class RobotContainer
     //TODO stop when the left joystick button is pressed.
     //TODO dpad tuşlarına basıldığında x derece hareket edecek.
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
-        () -> -MathUtil.applyDeadband(driverXbox.getLeftY(), 0.7),
-        () -> -MathUtil.applyDeadband(driverXbox.getLeftX(), 0.7),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.7),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.7),
         () -> driverXbox.getRightX() * 0.7);
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
@@ -114,8 +113,8 @@ public class RobotContainer
     
     driverXbox.povUp().whileTrue(dpadComUp);
 
-    driverXbox.povLeft().whileTrue(climberComDown);
-    driverXbox.povRight().whileTrue(climberComUp);
+    driverXbox.L2().whileTrue(climberComUp);
+    driverXbox.R2().whileTrue(climberComDown);
   }
 
   /**
