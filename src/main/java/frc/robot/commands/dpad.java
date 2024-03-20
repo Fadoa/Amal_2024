@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -13,7 +12,6 @@ public class dpad extends Command{
 
   private final double speed2;
 
-  private  double cry = 0;
 
     public dpad(ArmSubsystem subsystem, double speed1, double speed2) {
     this.speed1 = speed1;

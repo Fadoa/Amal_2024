@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Intake;
+import frc.robot.commands.LimelightSwerve;
 import frc.robot.commands.climberCom;
 import frc.robot.commands.dpad;
 import frc.robot.commands.expel;
@@ -61,7 +63,7 @@ public class RobotContainer
 
   private final expel expeliat = new expel(shooter);
 
-  private final SequentialCommandGroup test = new SequentialCommandGroup();
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,17 +80,32 @@ public class RobotContainer
     // left stick controls translation
     // right stick controls the angular velocity of the robot
 
-    //TODO stop when the left joystick button is pressed.
-    //TODO dpad tuşlarına basıldığında x derece hareket edecek.
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.025),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.025),
+        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(2), 0.5));
+
+
+    
+    // Applies deadbands and inverts controls because joysticks
+    // are back-right positive while robot
+    // controls are front-left positive
+    // left stick controls translation
+    // right stick controls the desired angle NOT angular rotation
+    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.7),
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.7),
-        () -> driverXbox.getRightX() * 0.7);
+        () -> driverXbox.getRightY(),
+        () -> driverXbox.getRightX());
+
+
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRawAxis(2));
+
+    
 
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
@@ -109,6 +126,7 @@ public class RobotContainer
     
     driverXbox.circle().toggleOnTrue(expeliat);
 
+    
     driverXbox.povDown().whileTrue(dpadComdown);
     
     driverXbox.povUp().whileTrue(dpadComUp);
