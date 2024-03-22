@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Intake;
 import frc.robot.commands.LimelightSwerve;
+import frc.robot.commands.PIDarm;
+import frc.robot.commands.PIDarmDown;
 import frc.robot.commands.climberCom;
 import frc.robot.commands.dpad;
 import frc.robot.commands.expel;
@@ -58,14 +60,15 @@ public class RobotContainer
 
   private final climberCom climberComUp = new climberCom(Arm, -0.5);
   
-  
   private final climberCom climberComDown = new climberCom(Arm, 0.5);
 
   private final expel expeliat = new expel(shooter);
 
-  
+  private final LimelightSwerve retarded = new LimelightSwerve(drivebase);
 
+  private final PIDarm dumb = new PIDarm(Arm, 10) ;
   
+  private final PIDarmDown dumbass = new PIDarmDown(Arm, 10);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -112,11 +115,14 @@ public class RobotContainer
     driverXbox.square().whileTrue(outtake); 
     
     driverXbox.circle().toggleOnTrue(expeliat);
-
+    
+    driverXbox.triangle().whileTrue(dumb);
     
     driverXbox.povDown().whileTrue(dpadComdown);
     
     driverXbox.povUp().whileTrue(dpadComUp);
+
+    driverXbox.povLeft().whileTrue(climberComDown);
 
     driverXbox.L2().whileTrue(climberComUp);
     driverXbox.R2().whileTrue(climberComDown);
