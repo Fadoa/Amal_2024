@@ -38,24 +38,6 @@ public class mastahpiece {
     return alpha;
 
     }
-    public static double AngleToMotor(double angle){
 
-        return 0.0;
-
-    }
-
-    public void test(double r, double angle){
-        // 2 * pi * r = 360
-        // alpha / 360 = h / 2 * pi * r
-        //Cim rpm 5310
-    
-        
-        double cevre = Math.PI * 2 * r;
-        double ratio = angle /360;
-        double gearRatio = 48 * 15;
-        double yay_h = cevre * ratio;
-        
-
-    }
 
 }

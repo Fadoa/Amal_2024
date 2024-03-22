@@ -65,6 +65,8 @@ public class RobotContainer
 
   
 
+  
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -83,32 +85,17 @@ public class RobotContainer
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.025),
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.025),
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(2), 0.5));
-
-
-    
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the desired angle NOT angular rotation
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.7),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.7),
-        () -> driverXbox.getRightY(),
-        () -> driverXbox.getRightX());
+        () -> MathUtil.applyDeadband(driverXbox.getRightX(), 0.2));
 
 
 
-    Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> driverXbox.getRawAxis(2));
+
+
+
 
     
 
-    drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
+    drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
   }
 
   /**

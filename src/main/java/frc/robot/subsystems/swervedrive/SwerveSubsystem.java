@@ -19,13 +19,16 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import frc.robot.Constants;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.commands.LimelightSwerve;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -210,6 +213,63 @@ public class SwerveSubsystem extends SubsystemBase
                                                                       swerveDrive.getMaximumVelocity()));
     });
   }
+  /**
+   * @param swerve
+   * @param vX
+   * @param vY
+   * @param headingHorizontal
+   * @param headingVertical
+   * @param Rotation
+   * @return
+   */
+  public void test_drive (SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingHorizontal,
+  DoubleSupplier headingVertical, DoubleSupplier Rotation)
+  {
+
+    // Get the desired chassis speeds based on a 2 joystick module.
+    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
+                                                         headingHorizontal.getAsDouble(),
+                                                         headingVertical.getAsDouble());
+
+    ChassisSpeeds   RotationChassis = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
+                                                        new Rotation2d(Rotation.getAsDouble() * Math.PI));
+
+
+
+    // Limit velocity to prevent tippy
+    Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);
+    Translation2d RotationTranslation = SwerveController.getTranslation2d(RotationChassis);
+    translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
+                                           Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
+                                           swerve.getSwerveDriveConfiguration());
+
+    RotationTranslation = SwerveMath.limitVelocity(RotationTranslation, swerve.getFieldVelocity(),swerve.getPose(),
+                                                 Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS), 
+                                                 swerve.getSwerveDriveConfiguration());
+    
+     translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
+                                           Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
+                                           swerve.getSwerveDriveConfiguration());;
+
+    SmartDashboard.putNumber("LimitedTranslation", translation.getX());
+    SmartDashboard.putString("Translation", translation.toString());
+
+    final Translation2d bullshit = RotationTranslation; 
+    final Translation2d bullshit2 = translation; 
+    
+    
+    // Make the robot move
+    if (Rotation.getAsDouble() <= -0.4 || Rotation.getAsDouble() >= 0.4 ){
+      swerve.drive(bullshit, RotationChassis.omegaRadiansPerSecond,true);
+
+}else {
+       swerve.drive(bullshit2, desiredSpeeds.omegaRadiansPerSecond, true);
+  }
+
+
+
+  }
+
 
   /**
    * Command to drive the robot using translative values and heading as a setpoint.
@@ -274,11 +334,28 @@ public class SwerveSubsystem extends SubsystemBase
       // Make the robot move
       swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),
                                           Math.pow(translationY.getAsDouble(), 3) * swerveDrive.getMaximumVelocity()),
-                        Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity(),
+                        Math.pow(angularRotationX.getAsDouble(), 3) * swerveDrive.getMaximumAngularVelocity()/2,
                         true,//TODO bavere sor
                         false);
     });
   }
+
+
+ public Command Masterdrive(DoubleSupplier X, DoubleSupplier Y, DoubleSupplier Rotation)
+ {
+  double Xvelocity = Math.pow(X.getAsDouble(), 3);
+  double Yvelocity = Math.pow(Y.getAsDouble(), 3);;
+  double RotationVelocity = Math.pow(Rotation.getAsDouble(), 3);
+  
+  return run(() -> {
+swerveDrive.drive(new Translation2d(Xvelocity * maximumSpeed, Yvelocity * maximumSpeed),RotationVelocity * swerveDrive.getMaximumAngularVelocity(),
+true
+,false);
+ 
+
+  });
+}
+
 
   /**
    * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
