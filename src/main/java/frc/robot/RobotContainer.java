@@ -45,8 +45,7 @@ public class RobotContainer
                                                                          "swerve"));
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController armXbox = new CommandXboxController(0);
-  final CommandPS5Controller armPS5 = new CommandPS5Controller(1);
+  final CommandPS4Controller armPS5 = new CommandPS5Controller(0);
 
   private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake = new IntakeSubsystem();
   
@@ -113,21 +112,21 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    armXbox.y().whileTrue(intakecom);
+    armPS5.cross().whileTrue(intakecom);
     
-    armXbox.x().whileTrue(outtake); 
+    armPS5.square().whileTrue(outtake); 
     
-    armXbox.a().toggleOnTrue(expeliat);
+    armPS5.circle().toggleOnTrue(expeliat);
     
-    armXbox.b().whileTrue(dumb);
+    armPS5.povDown().whileTrue(dpadComdown);
     
-    armXbox.povDown().whileTrue(dpadComdown);
-    
-    armXbox.povUp().whileTrue(dpadComUp);
+    armPS5.povUp().whileTrue(dpadComUp);
 
+    armPS5.povLeft().whileTrue(climberComUp);
 
-    armXbox.leftBumper().whileTrue(climberComUp);
-    armXbox.rightBumper().whileTrue(climberComDown);
+    armPS5.povRight().whileTrue(climberComDown);
+
+    
   }
 
   /**
