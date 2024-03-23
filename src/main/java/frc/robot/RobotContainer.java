@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -29,6 +30,8 @@ import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -42,7 +45,8 @@ public class RobotContainer
                                                                          "swerve"));
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandPS4Controller driverXbox = new CommandPS4Controller(0);
+  final CommandXboxController armXbox = new CommandXboxController(0);
+  final CommandPS5Controller armPS5 = new CommandPS5Controller(1);
 
   private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake = new IntakeSubsystem();
   
@@ -68,7 +72,7 @@ public class RobotContainer
 
   private final PIDarm dumb = new PIDarm(Arm, 10) ;
   
-  private final PIDarmDown dumbass = new PIDarmDown(Arm, 10);
+  private final PIDarmDown dumbass = new PIDarmDown(Arm, 5);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -77,8 +81,15 @@ public class RobotContainer
   {
     // Configure the trigger bindings
     configureBindings();
+    NamedCommands.registerCommand("shoot", expeliat);
+    NamedCommands.registerCommand("intake", intakecom);
+    NamedCommands.registerCommand("outtake", outtake);
+    NamedCommands.registerCommand("arm down", dpadComdown);
+    NamedCommands.registerCommand("arm up", dpadComUp);
+    NamedCommands.registerCommand("", climberComDown);
+    NamedCommands.registerCommand("", climberComDown);
 
-    
+    NamedCommands.registerCommand(null, climberComDown);
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
     // controls are front-left positive
@@ -86,17 +97,9 @@ public class RobotContainer
     // right stick controls the angular velocity of the robot
 
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), 0.025),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), 0.025),
-        () -> MathUtil.applyDeadband(driverXbox.getRightX(), 0.2));
-
-
-
-
-
-
-
-    
+        () -> MathUtil.applyDeadband(armPS5.getLeftY(), 0.025),
+        () -> MathUtil.applyDeadband(armPS5.getLeftX(), 0.025),
+        () -> MathUtil.applyDeadband(armPS5.getRightX(), 0.2));
 
     drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
   }
@@ -110,22 +113,21 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    driverXbox.cross().whileTrue(intakecom);
+    armXbox.y().whileTrue(intakecom);
     
-    driverXbox.square().whileTrue(outtake); 
+    armXbox.x().whileTrue(outtake); 
     
-    driverXbox.circle().toggleOnTrue(expeliat);
+    armXbox.a().toggleOnTrue(expeliat);
     
-    driverXbox.triangle().whileTrue(dumb);
+    armXbox.b().whileTrue(dumb);
     
-    driverXbox.povDown().whileTrue(dpadComdown);
+    armXbox.povDown().whileTrue(dpadComdown);
     
-    driverXbox.povUp().whileTrue(dpadComUp);
+    armXbox.povUp().whileTrue(dpadComUp);
 
-    driverXbox.povLeft().whileTrue(climberComDown);
 
-    driverXbox.L2().whileTrue(climberComUp);
-    driverXbox.R2().whileTrue(climberComDown);
+    armXbox.leftBumper().whileTrue(climberComUp);
+    armXbox.rightBumper().whileTrue(climberComDown);
   }
 
   /**

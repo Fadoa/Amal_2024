@@ -24,10 +24,10 @@ public void initialize() {
 public void execute() {
 
     double speed = pid.calculate(sets);
-    subsystem.move_arm(speed, speed);
+    subsystem.move_arm(speed);
     sets += 0.1;
 if (sets >= 10){
-    subsystem.move_arm(0, 0);
+    subsystem.move_arm(0);
 }
 
     
@@ -35,7 +35,7 @@ if (sets >= 10){
 
 @Override
 public void end(boolean interrupted) {
-    subsystem.move_arm(0, 0);
+    subsystem.move_arm(0);
     sets = 0;
 }
 @Override

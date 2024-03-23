@@ -30,12 +30,12 @@ System.out.println("dpad çalıştı!");
   @Override
   public void execute() {
 
-subsystem.move_arm(speed1,speed2);}
+subsystem.move_arm(speed1);}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.move_arm(0,0);
+    subsystem.move_arm(0);
   }
 
   // Returns true when the command should end.
