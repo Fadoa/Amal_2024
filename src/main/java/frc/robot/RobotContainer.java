@@ -43,8 +43,12 @@ public class RobotContainer
   private final SwerveSubsystem drivebase;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
+<<<<<<< HEAD
   private final CommandPS4Controller PS4 = new CommandPS4Controller(0);
   final CommandPS5Controller armPS5 = new CommandPS5Controller(1);
+=======
+  final CommandPS4Controller armPS5 = new CommandPS5Controller(0);
+>>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
 
   private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake ;
 
@@ -139,13 +143,18 @@ reft = new reft(Arm, 0.25);
    */
   private void configureBindings()
   {
+<<<<<<< HEAD
   /* 
     armXbox.y().whileTrue(intakecom);
+=======
+    armPS5.cross().whileTrue(intakecom);
+>>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
     
-    armXbox.x().whileTrue(outtake); 
+    armPS5.square().whileTrue(outtake); 
     
-    armXbox.a().toggleOnTrue(expeliat);
+    armPS5.circle().toggleOnTrue(expeliat);
     
+<<<<<<< HEAD
     armXbox.b().whileTrue(dumb);
 
     armXbox.leftBumper().whileTrue(climberComUp);
@@ -160,6 +169,17 @@ reft = new reft(Arm, 0.25);
     PS4.L2().whileTrue(climberComDown);
     PS4.R1().whileTrue(fuckoff);
     PS4.R2().whileTrue(fuckoff2);
+=======
+    armPS5.povDown().whileTrue(dpadComdown);
+    
+    armPS5.povUp().whileTrue(dpadComUp);
+
+    armPS5.povLeft().whileTrue(climberComUp);
+
+    armPS5.povRight().whileTrue(climberComDown);
+
+    
+>>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
   }
 
   /**
