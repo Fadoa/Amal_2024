@@ -25,8 +25,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.Constants.AutonConstants;
-import frc.robot.commands.LimelightSwerve;
-
 import java.io.File;
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -600,7 +598,5 @@ true
   }
 
 
-  public Command aimToTarget (){
-return this.runOnce(() -> swerveDrive.drive(new ChassisSpeeds(0, 0, LimelightSwerve.limelight_aim_proportional())));
-  }
+
 }

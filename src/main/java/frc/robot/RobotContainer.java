@@ -16,14 +16,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Intake;
-import frc.robot.commands.LimelightSwerve;
-import frc.robot.commands.PIDarm;
-import frc.robot.commands.PIDarmDown;
-import frc.robot.commands.climberCom;
-import frc.robot.commands.dpad;
-import frc.robot.commands.expel;
-import frc.robot.commands.outtake;
+import frc.robot.commands.armCommand.dpad;
+import frc.robot.commands.armCommand.reft;
+import frc.robot.commands.climberCommand.climberCom;
+import frc.robot.commands.climberCommand.fuckoff;
+import frc.robot.commands.intakeCommand.Intake;
+import frc.robot.commands.intakeCommand.expel;
+import frc.robot.commands.intakeCommand.outtake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
@@ -34,53 +33,78 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
- * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
+ * littobot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
  * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer
 {
 
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve"));
+  private final SwerveSubsystem drivebase;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController armXbox = new CommandXboxController(0);
+  private final CommandPS4Controller PS4 = new CommandPS4Controller(0);
   final CommandPS5Controller armPS5 = new CommandPS5Controller(1);
 
-  private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake = new IntakeSubsystem();
+  private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake ;
+
+  private final ShooterSubsystem shooter ;
+
+  private final ArmSubsystem Arm;
   
-  private final ShooterSubsystem shooter = new ShooterSubsystem();
-
-  private final ArmSubsystem Arm = new ArmSubsystem(9, 10, 11, 12);
+  private final Intake intakecom; 
   
-  private final Intake intakecom= new Intake(Intake); 
+  private final outtake outtake;
+
+  private final dpad dpadComUp;
+
+  private final dpad dpadComdown ;
+
+  private final climberCom climberComUp ;
   
-  private final outtake outtake = new outtake(Intake);
+  private final climberCom climberComDown ;
 
-  private final dpad dpadComUp = new dpad(Arm, 0.95,1);
-
-  private final dpad dpadComdown = new dpad(Arm, -0.64875,-0.75);
-
-  private final climberCom climberComUp = new climberCom(Arm, -0.5);
+  private final expel expeliat ;
   
-  private final climberCom climberComDown = new climberCom(Arm, 0.5);
+  private final fuckoff fuckoff ;
 
-  private final expel expeliat = new expel(shooter);
+  private final fuckoff fuckoff2;
 
-  private final LimelightSwerve retarded = new LimelightSwerve(drivebase);
-
-  private final PIDarm dumb = new PIDarm(Arm, 10) ;
-  
-  private final PIDarmDown dumbass = new PIDarmDown(Arm, 5);
+  private final reft reft;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
-    // Configure the trigger bindings
-    configureBindings();
+    shooter = new ShooterSubsystem();
+drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                         "swerve"));
+Intake = new IntakeSubsystem();
+
+Arm = new ArmSubsystem(9, 10, 11, 12);
+
+intakecom= new Intake(Intake);
+
+outtake = new outtake(Intake);
+
+reft = new reft(Arm, 0.25);
+
+ dpadComUp = new dpad(Arm, 0.5);
+
+ dpadComdown = new dpad(Arm, -0.49);
+
+ climberComUp = new climberCom(Arm, -1);
+  
+ climberComDown = new climberCom(Arm, 1);
+
+ expeliat = new expel(shooter);
+  
+ fuckoff = new fuckoff(Arm, -1);
+
+ fuckoff2 = new fuckoff(Arm, 1);
+
+
     NamedCommands.registerCommand("shoot", expeliat);
     NamedCommands.registerCommand("intake", intakecom);
     NamedCommands.registerCommand("outtake", outtake);
@@ -89,6 +113,8 @@ public class RobotContainer
     NamedCommands.registerCommand("", climberComDown);
     NamedCommands.registerCommand("", climberComDown);
 
+    // Configure the trigger bindings
+    configureBindings();
     NamedCommands.registerCommand(null, climberComDown);
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
@@ -113,6 +139,7 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+  /* 
     armXbox.y().whileTrue(intakecom);
     
     armXbox.x().whileTrue(outtake); 
@@ -120,14 +147,19 @@ public class RobotContainer
     armXbox.a().toggleOnTrue(expeliat);
     
     armXbox.b().whileTrue(dumb);
-    
-    armXbox.povDown().whileTrue(dpadComdown);
-    
-    armXbox.povUp().whileTrue(dpadComUp);
-
 
     armXbox.leftBumper().whileTrue(climberComUp);
     armXbox.rightBumper().whileTrue(climberComDown);
+
+    */    
+    PS4.povDown().whileTrue(dpadComdown);
+    
+    PS4.povUp().whileTrue(dpadComUp);
+
+    PS4.cross().whileTrue(reft);
+    PS4.L2().whileTrue(climberComDown);
+    PS4.R1().whileTrue(fuckoff);
+    PS4.R2().whileTrue(fuckoff2);
   }
 
   /**

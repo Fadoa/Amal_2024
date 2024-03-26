@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.climberCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -21,11 +21,13 @@ public class climberCom extends Command {
         public void execute() 
         {
             subsystem.Climbfunct(power);
+            
         }
     
         @Override
         public void end(boolean interrupted) {
             subsystem.Climbfunct(0);
+            
             System.out.println("intake bitti"); 
         }
     
