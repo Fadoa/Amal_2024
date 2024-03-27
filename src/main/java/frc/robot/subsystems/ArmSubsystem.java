@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
-    private final CANSparkMax ArmMotor1;
-    private final CANSparkMax ArmMotor2;
+    public  final CANSparkMax ArmMotor1;
+    public final CANSparkMax ArmMotor2;
 
     private final CANSparkMax ClimberMotor1;
     private final CANSparkMax ClimberMotor2;
@@ -24,15 +24,12 @@ public class ArmSubsystem extends SubsystemBase {
 
         ArmMotor2 = new CANSparkMax(10,MotorType.kBrushless);
 
-        ArmMotor1.follow(ArmMotor2);
 
         encoder1 = ArmMotor1.getEncoder() ;
         encoder2 = ArmMotor2.getEncoder() ;
-        encoder1.setPositionConversionFactor(1/42);
-        encoder2.setPositionConversionFactor(1/42);
+
         encoder1.setPosition(0);
         encoder2.setPosition(0);
-        ;
         ClimberMotor1 = new CANSparkMax(11, MotorType.kBrushed);
         
         
@@ -43,10 +40,22 @@ public class ArmSubsystem extends SubsystemBase {
     
     }
     
-    public void move_arm(double power1){
+    public void move_arm1(double power1){
+
+        ArmMotor1.set(power1);
+        
+    }
+
+    
+    public void move_arm2(double power1){
+
         ArmMotor2.set(power1);
         
-        
+    }
+    
+    public void resetEncoder(){
+        encoder1.setPosition(0);
+        encoder2.setPosition(0);
     }
     public void Climbfunct(double power){
         
@@ -60,7 +69,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getEncoder2(){
-        return encoder1.getPosition();
+        return encoder2.getPosition();
 
     }
     
@@ -71,6 +80,9 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Arm angle",getEncoder1()/EncoderRatio);
         SmartDashboard.putNumber("arm 1 voltage", ArmMotor1.getBusVoltage());
         SmartDashboard.putNumber("arm 2 voltage", ArmMotor2.getBusVoltage());
+        SmartDashboard.putNumber("arm 1 amperage", ArmMotor1.getOutputCurrent());
+        SmartDashboard.putNumber("arm 2 amperag", ArmMotor2.getOutputCurrent());
+        
     }
     
 

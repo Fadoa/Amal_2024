@@ -43,12 +43,7 @@ public class RobotContainer
   private final SwerveSubsystem drivebase;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-<<<<<<< HEAD
-  private final CommandPS4Controller PS4 = new CommandPS4Controller(0);
-  final CommandPS5Controller armPS5 = new CommandPS5Controller(1);
-=======
-  final CommandPS4Controller armPS5 = new CommandPS5Controller(0);
->>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
+  final CommandPS4Controller armPS5 = new CommandPS4Controller(0);
 
   private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake ;
 
@@ -92,11 +87,11 @@ intakecom= new Intake(Intake);
 
 outtake = new outtake(Intake);
 
-reft = new reft(Arm, 0.25);
+reft = new reft(Arm);
 
  dpadComUp = new dpad(Arm, 0.5);
 
- dpadComdown = new dpad(Arm, -0.49);
+ dpadComdown = new dpad(Arm, -0.50);
 
  climberComUp = new climberCom(Arm, -1);
   
@@ -131,7 +126,7 @@ reft = new reft(Arm, 0.25);
         () -> MathUtil.applyDeadband(armPS5.getLeftX(), 0.025),
         () -> MathUtil.applyDeadband(armPS5.getRightX(), 0.2));
 
-    drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
+   // drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
   }
 
   /**
@@ -143,43 +138,22 @@ reft = new reft(Arm, 0.25);
    */
   private void configureBindings()
   {
-<<<<<<< HEAD
-  /* 
-    armXbox.y().whileTrue(intakecom);
-=======
+    armPS5.povLeft().whileTrue(reft);
+    armPS5.povUp().whileTrue(dpadComUp);
+armPS5.povDown().whileTrue(dpadComdown);
     armPS5.cross().whileTrue(intakecom);
->>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
-    
-    armPS5.square().whileTrue(outtake); 
+    armPS5.square().whileTrue(outtake);
+/*      
     
     armPS5.circle().toggleOnTrue(expeliat);
     
-<<<<<<< HEAD
-    armXbox.b().whileTrue(dumb);
-
-    armXbox.leftBumper().whileTrue(climberComUp);
-    armXbox.rightBumper().whileTrue(climberComDown);
-
-    */    
-    PS4.povDown().whileTrue(dpadComdown);
     
-    PS4.povUp().whileTrue(dpadComUp);
-
-    PS4.cross().whileTrue(reft);
-    PS4.L2().whileTrue(climberComDown);
-    PS4.R1().whileTrue(fuckoff);
-    PS4.R2().whileTrue(fuckoff2);
-=======
-    armPS5.povDown().whileTrue(dpadComdown);
     
-    armPS5.povUp().whileTrue(dpadComUp);
-
     armPS5.povLeft().whileTrue(climberComUp);
 
-    armPS5.povRight().whileTrue(climberComDown);
+    armPS5.povRight().whileTrue(climberComDown);*/
 
     
->>>>>>> f9ddc3dce9e3c94fbb21f530d6b2efb1c9341fe6
   }
 
   /**
