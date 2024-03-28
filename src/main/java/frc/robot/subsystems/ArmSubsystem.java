@@ -34,8 +34,8 @@ public class ArmSubsystem extends SubsystemBase {
         
         
         ClimberMotor2 = new CANSparkMax(12, MotorType.kBrushed);
-    ClimberMotor2.setInverted(true);
-    ClimberMotor1.setInverted(true);;
+    ClimberMotor2.setInverted(false);
+    ClimberMotor1.setInverted(false);;
 
     
     }
@@ -60,10 +60,10 @@ public class ArmSubsystem extends SubsystemBase {
     public void Climbfunct(double power){
         
         ClimberMotor2.set(power);
-    } 
-    public void fuckoff(double power){
         ClimberMotor1.set(power);
-    }
+    
+    } 
+
     public double getEncoder1(){
         return encoder1.getPosition();
     }

@@ -1,17 +1,21 @@
 package frc.robot.commands.armCommand;
 
-import edu.wpi.first.math.controller.PIDController;
+import java.time.Duration;
+import java.time.Instant;
+
+import com.ctre.phoenix.time.StopWatch;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class reft extends Command{
+public class reverse extends Command{
 
     private final Timer timer = new  Timer();
   private final ArmSubsystem subsystem;
 
-  private double current_time;
-  private double middle_time;
+   private double current_time;
+  private StopWatch stopWatch;
 
 
   private double middle_delta_encoder;
@@ -24,10 +28,11 @@ public class reft extends Command{
 
   private double D_Value ;
   private double delta_ender ;
+  private Instant start;
 
 
 
-    public reft(ArmSubsystem subsystem) {
+    public reverse(ArmSubsystem subsystem) {
         
   this.subsystem = subsystem;
 
@@ -40,50 +45,46 @@ public class reft extends Command{
   public void initialize() {
 System.out.println("reft çalıştı!");
 
-delta_encoder = subsystem.getEncoder2() - subsystem.getEncoder1();
-timer.start();
-current_time = timer.get();
+delta_encoder = subsystem.getEncoder1() - subsystem.getEncoder2();
+  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.ArmMotor1.set(1);
-    middle_time = current_time;
+start = Instant.now();
+
+    subsystem.move_arm1(1);
+    
+
     middle_delta_encoder = delta_encoder;
 
-    current_time = timer.get();
 
     delta_encoder = subsystem.getEncoder1() - subsystem.getEncoder2();
     
-    delta_ender= (delta_encoder-middle_delta_encoder)/(current_time-middle_time);
-    
+    delta_ender= (delta_encoder-middle_delta_encoder)/Duration.between(Instant.now(), start).toMinutes();
+    System.out.println(delta_encoder-middle_delta_encoder);
+    System.out.println();
+    System.out.println(delta_ender);
+
+kP_value = -0.1;
+kD_Value =0.75;
+
     p_value = delta_encoder *kP_value;
     
     D_Value = Math.abs(delta_ender)*kD_Value;
     
     double final_value = p_value + D_Value;
 
-    if(final_value > 1){
-        final_value =1;
-    }else if (final_value < -1){
-        final_value= -1;
-    }
+System.out.println(p_value);
+System.out.println(D_Value);
 
+    
 
-    System.out.println(current_time);
-    System.out.println(delta_encoder);
-
-    System.out.println(delta_ender);
-    
-    System.out.println(p_value);
-    
-    System.out.println(D_Value);
-    
     System.out.println(final_value);
-    subsystem.ArmMotor1.set(1);
-    subsystem.ArmMotor2.set(-final_value);
-}
+
+    subsystem.ArmMotor2.set(final_value);
+  }
 
 
   // Called once the command ends or is interrupted.
@@ -92,7 +93,7 @@ current_time = timer.get();
     subsystem.move_arm1(0);
     subsystem.move_arm2(0);
     subsystem.resetEncoder();
-    timer.reset();
+   
   }
 
   // Returns true when the command should end.

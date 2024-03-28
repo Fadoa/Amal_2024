@@ -5,21 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.armCommand.dpad;
-import frc.robot.commands.armCommand.reft;
+import frc.robot.commands.armCommand.mit;
 import frc.robot.commands.climberCommand.climberCom;
-import frc.robot.commands.climberCommand.fuckoff;
 import frc.robot.commands.intakeCommand.Intake;
 import frc.robot.commands.intakeCommand.expel;
 import frc.robot.commands.intakeCommand.outtake;
@@ -65,11 +58,9 @@ public class RobotContainer
 
   private final expel expeliat ;
   
-  private final fuckoff fuckoff ;
+  private final frc.robot.commands.armCommand.reverse reverse;
 
-  private final fuckoff fuckoff2;
-
-  private final reft reft;
+  private final mit reft;  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -87,21 +78,19 @@ intakecom= new Intake(Intake);
 
 outtake = new outtake(Intake);
 
-reft = new reft(Arm);
+reft = new mit(Arm);
 
- dpadComUp = new dpad(Arm, 0.5);
+ dpadComUp = new dpad(Arm, 1);
 
- dpadComdown = new dpad(Arm, -0.50);
+ dpadComdown = new dpad(Arm, -1);
 
- climberComUp = new climberCom(Arm, -1);
+ climberComUp = new climberCom(Arm, 1);
   
- climberComDown = new climberCom(Arm, 1);
+ climberComDown = new climberCom(Arm, -1);
 
+reverse = new frc.robot.commands.armCommand.reverse(Arm);
  expeliat = new expel(shooter);
-  
- fuckoff = new fuckoff(Arm, -1);
 
- fuckoff2 = new fuckoff(Arm, 1);
 
 
     NamedCommands.registerCommand("shoot", expeliat);
@@ -114,7 +103,7 @@ reft = new reft(Arm);
 
     // Configure the trigger bindings
     configureBindings();
-    NamedCommands.registerCommand(null, climberComDown);
+    
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
     // controls are front-left positive
@@ -138,20 +127,19 @@ reft = new reft(Arm);
    */
   private void configureBindings()
   {
-    armPS5.povLeft().whileTrue(reft);
+    armPS5.L2().whileTrue(reft);
+    armPS5.R2().whileTrue(reverse);
     armPS5.povUp().whileTrue(dpadComUp);
 armPS5.povDown().whileTrue(dpadComdown);
     armPS5.cross().whileTrue(intakecom);
     armPS5.square().whileTrue(outtake);
-/*      
+
     
     armPS5.circle().toggleOnTrue(expeliat);
     
-    
-    
-    armPS5.povLeft().whileTrue(climberComUp);
+    armPS5.L1().whileTrue(climberComUp);
 
-    armPS5.povRight().whileTrue(climberComDown);*/
+    armPS5.R1().whileTrue(climberComDown);
 
     
   }
