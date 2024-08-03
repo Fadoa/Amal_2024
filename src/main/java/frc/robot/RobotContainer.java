@@ -5,13 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.armCommand.calculate;
 import frc.robot.commands.armCommand.dpad;
-import frc.robot.commands.armCommand.mit;
 import frc.robot.commands.climberCommand.climberCom;
 import frc.robot.commands.intakeCommand.Intake;
 import frc.robot.commands.intakeCommand.expel;
@@ -19,8 +20,10 @@ import frc.robot.commands.intakeCommand.outtake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem.ShooterSubsystem;
+import frc.robot.commands.visionCommands.qaram;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import frc.robot.commands.armCommand.calculate;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -36,9 +39,11 @@ public class RobotContainer
   private final SwerveSubsystem drivebase;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandPS4Controller armPS5 = new CommandPS4Controller(0);
+  final CommandXboxController armPS5 = new CommandXboxController(0);
 
   private final frc.robot.subsystems.IntakeSubsystem.IntakeSubsystem Intake ;
+
+private final calculate odlekKerem;
 
   private final ShooterSubsystem shooter ;
 
@@ -56,11 +61,11 @@ public class RobotContainer
   
   private final climberCom climberComDown ;
 
+
+  private final qaram gor;
+
   private final expel expeliat ;
   
-  private final frc.robot.commands.armCommand.reverse reverse;
-
-  private final mit reft;  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,20 +83,17 @@ intakecom= new Intake(Intake);
 
 outtake = new outtake(Intake);
 
-reft = new mit(Arm);
+ dpadComUp = new dpad(Arm, 0.5);
 
- dpadComUp = new dpad(Arm, 1);
-
- dpadComdown = new dpad(Arm, -1);
+ dpadComdown = new dpad(Arm, -0.5);
 
  climberComUp = new climberCom(Arm, 1);
   
  climberComDown = new climberCom(Arm, -1);
-
-reverse = new frc.robot.commands.armCommand.reverse(Arm);
  expeliat = new expel(shooter);
-
-
+ odlekKerem = new calculate(Arm);
+ gor = new qaram(Arm, Intake); 
+;
 
     NamedCommands.registerCommand("shoot", expeliat);
     NamedCommands.registerCommand("intake", intakecom);
@@ -115,39 +117,33 @@ reverse = new frc.robot.commands.armCommand.reverse(Arm);
         () -> MathUtil.applyDeadband(armPS5.getLeftX(), 0.025),
         () -> MathUtil.applyDeadband(armPS5.getRightX(), 0.2));
 
-   // drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
+    drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity);
   }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
    * named factories in {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
+   * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandXboxController PS4}
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
    */
   private void configureBindings()
   {
-    armPS5.L2().whileTrue(reft);
-    armPS5.R2().whileTrue(reverse);
     armPS5.povUp().whileTrue(dpadComUp);
 armPS5.povDown().whileTrue(dpadComdown);
-    armPS5.cross().whileTrue(intakecom);
-    armPS5.square().whileTrue(outtake);
+    armPS5.b().whileTrue(intakecom);
+    armPS5.a().whileTrue(outtake);
 
+    armPS5.y().whileTrue(odlekKerem);
+    armPS5.x().toggleOnTrue(expeliat);
     
-    armPS5.circle().toggleOnTrue(expeliat);
-    
-    armPS5.L1().whileTrue(climberComUp);
-
-    armPS5.R1().whileTrue(climberComDown);
-
     
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
-   * @return the command to run in autonomous
+   * @return the c;ommand to run in autonomous
    */
   public Command getAutonomousCommand()
   {

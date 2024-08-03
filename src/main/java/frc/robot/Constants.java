@@ -43,6 +43,7 @@ public final class Constants {
 
 
   public static final class VisionConstants{
+    
     public static double amptarget = 26.375;
     public static double speakertarger = 82;
     public static double robotheight = Units.metersToInches(0.325);

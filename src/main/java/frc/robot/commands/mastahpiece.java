@@ -31,7 +31,7 @@ public class mastahpiece {
     }
 
     public static double AngleGiver(double targetHeight){
-    double y = Units.inchesToMeters(targetHeight) - Constants.VisionConstants.robotheight;
+    double y = targetHeight - Constants.VisionConstants.robotheight;
     double x = Meter(targetHeight);
     double alpha = Math.atan(y/x);
 
